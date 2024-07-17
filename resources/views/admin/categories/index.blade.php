@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-3 py-5">
                 <div class="flex justify-between items-center">
                     <h3>List of Categories</h3>
-                    <a href="{{ route('admin.categories.create') }}" class="px-5 py-2 border hover:bg-neutral-50 rounded active:ring-4 active:ring-slate-100">Create New</a>
+                    <a href="{{ route('admin.categories.create') }}" class="px-5 py-2 border hover:bg-neutral-50 rounded-full active:ring-4 active:ring-slate-100">Create New</a>
                 </div>
 
                 @if (session()->has('message'))
