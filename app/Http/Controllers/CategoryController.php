@@ -107,7 +107,7 @@ class CategoryController extends Controller
                 $iconPath = $request->file('icon')->store('category_icons', 'public');
                 $validated['icon'] = $iconPath;
 
-                Storage::delete($category->icon);
+                Storage::disk('public')->delete($category->icon);
 
                 $category->update($validated);
                 
@@ -136,6 +136,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        if (Storage::disk('public')->exists($category->icon)) {
+            Storage::disk('public')->delete($category->icon);
+        }
+
+        return redirect()->route('admin.categories.index')->with('message', 'category was removed.');
     }
 }
