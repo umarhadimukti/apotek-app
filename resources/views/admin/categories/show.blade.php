@@ -10,9 +10,12 @@
             <div class="">
                 <button type="button" onclick="window.history.back()" class="px-3 py-1 rounded text-neutral-700 hover:bg-white mb-3">&laquo; back</button>
             </div>
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-3 py-5">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-5 py-5">
                 <div class="flex justify-between items-center">
-                    <h3 class="italic font-semibold text-xl">#{{ $category->id }}</h3>
+                    <div class="flex items-center gap-2">
+                        <h3 class="italic font-semibold text-xl">#{{ $category->id }}</h3>
+                        <span class="font-semibold text-xl">{{ $category->name }}</span>
+                    </div>
                     <a href="{{ route('admin.categories.destroy', $category->id) }}" onclick="return confirm('are you sure want to delete?')" class="px-5 py-2 hover:bg-neutral-100 hover:scale-105 transition-all rounded active:ring-4 active:ring-slate-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff2825" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -24,13 +27,13 @@
                     </a>
                 </div>
             
-                <div class=" mt-3">
+                <div class="mt-3">
                     <form action="{{ route('admin.categories.update', $category->id) }}" enctype="multipart/form-data" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="mb-2">
                             <label for="name" class="block">Category Name</label>
-                            <input type="text" value="{{ $category->name }}" name="name" class="w-[400px] rounded border border-gray-300 hover:scale-105 transition-all @error('name') border border-red-500 @enderror">
+                            <input type="text" value="{{ $category->name }}" name="name" class="w-[400px] rounded border border-gray-300 @error('name') border border-red-500 @enderror">
                             @error('name')
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror()

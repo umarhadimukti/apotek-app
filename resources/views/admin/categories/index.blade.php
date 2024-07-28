@@ -10,11 +10,11 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-3 py-5">
                 <div class="flex justify-between items-center">
                     <h3>List of Categories</h3>
-                    <a href="{{ route('admin.categories.create') }}" class="px-5 py-2 border hover:bg-neutral-50 rounded-full active:ring-4 active:ring-slate-100">Create New</a>
+                    <a href="{{ route('admin.categories.create') }}" class="px-5 py-1 border hover:bg-neutral-50 rounded-full active:ring-4 active:ring-slate-100">Create New</a>
                 </div>
 
                 @if (session()->has('message'))
-                    <div class="my-2 border rounded p-3 max-w-max text-green-500">
+                    <div class="my-2 ring-4 ring-green-100 animate-pulse rounded-full py-1 px-3 max-w-max bg-green-400 text-neutral-50">
                         {{ session('message') }}
                     </div>
                 @endif
@@ -31,9 +31,6 @@
                                         Name
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Slug
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
                                         Details
                                     </th>
                                 </tr>
@@ -44,9 +41,11 @@
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                         {{ $category->id }}
                                     </th>
-                                    <td class="px-6 py-4 flex items-center gap-1">
+                                    <td class="px-6 py-4 flex items-center gap-2">
                                         @if ($category->icon)
-                                        <img src={{ asset('storage/' . $category->icon) }} width="30" alt="">
+                                        <div class="rounded-full w-10 h-10 overflow-hidden">
+                                            <img src={{ asset('storage/' . $category->icon) }} alt="">
+                                        </div>
                                         @else
                                         <div class="flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-category-2" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#00abfb" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -58,10 +57,12 @@
                                             </svg>
                                         </div>
                                         @endif
-                                        {{ $category->name }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ $category->slug ?? '-' }}
+                                        <div class="flex flex-col">
+                                            <div class="font-bold text-black">
+                                                {{ $category->name }}
+                                            </div>
+                                            {{ $category->slug ?? '-' }}
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="font-medium text-blue-600 hover:underline hover:cursor-pointer flex gap-3">

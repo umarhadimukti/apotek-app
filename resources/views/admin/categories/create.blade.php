@@ -10,7 +10,7 @@
             <div class="">
                 <button type="button" onclick="window.history.back()" class="px-3 py-1 rounded text-neutral-700 hover:bg-white mb-3">&laquo; back</button>
             </div>
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-3 py-4 w-full sm:w-[500px]">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-5 py-5 w-full sm:w-[500px]">
                 <form method="POST" action="{{ route('admin.categories.store') }}" enctype="multipart/form-data">
                     @csrf
             
