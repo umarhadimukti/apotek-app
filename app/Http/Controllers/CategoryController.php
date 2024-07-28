@@ -12,24 +12,15 @@ use Illuminate\Validation\ValidationException;
 
 class CategoryController extends Controller
 {
-    public $isOpen = false;
-
-    public function setOpenModal() 
-    {
-        $this->isOpen = !$this->isOpen;
-
-        return $this->isOpen;
-    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = Category::orderBy('id')->get();
+        $categories = Category::query()->withTrashed()->latest()->get();
 
         return view('admin.categories.index', [
             'categories' => $categories,
-            'setOpen' => $this->setOpenModal(),
         ]);
     }
 
@@ -136,12 +127,59 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
+        DB::beginTransaction();
 
-        if (Storage::disk('public')->exists($category->icon)) {
-            Storage::disk('public')->delete($category->icon);
+        try {
+            $category->delete();
+            
+            DB::commit();
+            
+            if (Storage::disk('public')->exists($category->icon)) {
+                Storage::disk('public')->delete($category->icon);
+            }
+    
+            return redirect()->route('admin.categories.index')->with('message', 'category was removed.');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
         }
+    }
 
-        return redirect()->route('admin.categories.index')->with('message', 'category was removed.');
+    public function restore($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $category = Category::query()->withTrashed()->find($id);
+            if ($category) {
+                $category->restore();
+            }
+
+            DB::commit();
+
+            return redirect()->route('admin.categories.index')->with('message', 'category restored.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+    }
+
+    public function forceDelete($id)
+    {
+        DB::beginTransaction();
+        try {
+            $category = Category::query()->withTrashed()->find($id);
+            if ($category) {
+                $category->forceDelete();
+            }
+            
+            DB::commit();
+
+            return redirect()->route('admin.categories.index')->with('message', 'category permanently deleted.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 }
