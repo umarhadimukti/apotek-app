@@ -3,7 +3,9 @@
 namespace Database\Seeders\Environment;
 
 use App\Models\User;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
+use Database\Seeders\ProductSeeder;
 use Database\Seeders\RolePermissionSeeder;
 
 class LocalSeeder extends Seeder
@@ -44,5 +46,31 @@ class LocalSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
         $buyer->assignRole('buyer');
+
+
+        Category::create([
+            'name' => 'Pertolongan Pertama',
+            'slug' => 'pertolongan-pertama',
+        ]);
+        Category::create([
+            'name' => 'Obat Kepala',
+            'slug' => 'obat-kepala',
+        ]);
+        Category::create([
+            'name' => 'Obat Perut',
+            'slug' => 'obat-perut',
+        ]);
+        Category::create([
+            'name' => 'Obat Demam',
+            'slug' => 'obat-demam',
+        ]);
+        Category::create([
+            'name' => 'Obat Batuk',
+            'slug' => 'obat-batuk',
+        ]);
+
+
+        $this->call(ProductSeeder::class);
+
     }
 }

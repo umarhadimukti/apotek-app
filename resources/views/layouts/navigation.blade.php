@@ -17,9 +17,10 @@
                     </x-nav-link>
 
                     @hasanyrole('admin|owner')
-                    <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
-                        <h3 class="text-lg">Categories</h3>
-                    </x-nav-link>
+                    <x-nav-flyout :active="request()->routeIs('admin.*')">
+                        <h3 class="text-lg">Admin</h3>
+                        
+                    </x-nav-flyout>
                     @endhasanyrole
                 </div>
             </div>

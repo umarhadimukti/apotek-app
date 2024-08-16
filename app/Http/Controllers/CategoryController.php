@@ -133,10 +133,6 @@ class CategoryController extends Controller
             $category->delete();
             
             DB::commit();
-            
-            if (Storage::disk('public')->exists($category->icon)) {
-                Storage::disk('public')->delete($category->icon);
-            }
     
             return redirect()->route('admin.categories.index')->with('message', 'category was removed.');
 
@@ -172,8 +168,11 @@ class CategoryController extends Controller
             $category = Category::query()->withTrashed()->find($id);
             if ($category) {
                 $category->forceDelete();
+                if (Storage::disk('public')->exists($category->icon)) {
+                    Storage::disk('public')->delete($category->icon);
+                }
             }
-            
+
             DB::commit();
 
             return redirect()->route('admin.categories.index')->with('message', 'category permanently deleted.');
