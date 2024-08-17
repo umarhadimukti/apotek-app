@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ProductRequest;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
@@ -22,15 +27,36 @@ class ProductController extends Controller
      */
     public function create()
     {
+        $categories = Category::query()->latest()->get();
         
+        return view('admin.products.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        DB::beginTransaction();
+        try {
+            $validated['slug'] = Str::slug($validated['name']);
+            if ($request->hasFile('photo')) {
+                $photo_path = $validated['photo']->store('products', 'public');
+                $validated['photo'] = $photo_path;
+            }
+            Product::create($validated);
+            DB::commit();
+
+            return redirect()->route('admin.products.index')->with('message', 'new product successfully added');
+        } catch (\Exception $e) {
+            DB::rollback();
+            $error = ValidationException::withMessages([
+                'validation_error' => $e->getMessage(),
+            ]);
+            throw $error;
+        }
     }
 
     /**

@@ -50,7 +50,7 @@ class CategoryController extends Controller
             Category::create($validated);
             DB::commit();
 
-            return redirect()->route('admin.categories.index')->with('message', 'new category successfully added.');
+            return redirect()->route('admin.categories.index')->with('message', 'new category successfully added');
         } catch (\Exception $e) {
             DB::rollback();
             $error = ValidationException::withMessages([

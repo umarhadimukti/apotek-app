@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('product') }}
+            {{ __('Products') }}
         </h2>
     </x-slot>
 
@@ -31,7 +31,7 @@
                                         ID
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Name
+                                        Product
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Price
