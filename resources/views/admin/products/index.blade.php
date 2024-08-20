@@ -55,7 +55,7 @@
                                     </th>
                                     <td class="px-6 py-4 flex items-center gap-2">
                                         @if (@$product->photo)
-                                        <div class="rounded-full w-10 h-10 overflow-hidden">
+                                        <div class="rounded w-10 h-10 overflow-hidden">
                                             <img src={{ asset('storage/' . @$product->photo) }} alt="">
                                         </div>
                                         @else

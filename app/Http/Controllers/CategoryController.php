@@ -17,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::query()->withTrashed()->latest()->get();
+        $categories = Category::query()->withTrashed()->orderBy('id', 'asc')->get();
 
         return view('admin.categories.index', [
             'categories' => $categories,
@@ -98,7 +98,9 @@ class CategoryController extends Controller
                 $iconPath = $request->file('icon')->store('category_icons', 'public');
                 $validated['icon'] = $iconPath;
 
-                Storage::disk('public')->delete($category->icon);
+                // remove old icon if exists
+                $oldIconPath = @$category?->icon ;
+                !is_null($oldIconPath) && Storage::disk('public')->exists($oldIconPath);
 
                 $category->update($validated);
                 
